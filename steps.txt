@@ -1,0 +1,88 @@
+Certainly! Here’s a step-by-step explanation of what you’ve done so far:
+
+Step 1: Install Python and Libraries
+Install Python:
+
+Download and install Python from python.org.
+Ensure you check the option to "Add Python to PATH" during installation.
+Install Required Libraries:
+
+Open Command Prompt.
+Run pip install tensorflow opencv-python dlib flask to install TensorFlow, OpenCV, Dlib, and Flask.
+Step 2: Create and Edit Python Script
+Create the Python Script:
+
+Open a text editor (e.g., Notepad or VS Code) and create a new file named face_keypoints_detection.py.
+Write the Code:
+
+Add the following code to face_keypoints_detection.py:
+
+python
+Copy code
+import cv2
+import dlib
+
+# Load pre-trained face detector and facial landmarks predictor
+detector = dlib.get_frontal_face_detector()
+predictor = dlib.shape_predictor('shape_predictor_68_face_landmarks.dat')
+
+def get_landmarks(image_path):
+    image = cv2.imread(image_path)
+    if image is None:
+        raise FileNotFoundError(f"Image file '{image_path}' not found or unable to open.")
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    faces = detector(gray)
+    landmarks = []
+    for face in faces:
+        shape = predictor(gray, face)
+        landmarks.append([(p.x, p.y) for p in shape.parts()])
+    return image, landmarks
+
+def draw_landmarks(image, landmarks):
+    for landmark in landmarks:
+        for (x, y) in landmark:
+            cv2.circle(image, (x, y), 2, (0, 255, 0), -1)
+    return image
+
+def main(image_path):
+    image, landmarks = get_landmarks(image_path)
+    image_with_landmarks = draw_landmarks(image, landmarks)
+    cv2.imshow('Facial Landmarks', image_with_landmarks)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+if __name__ == "__main__":
+    image_path = 'test_image.jpg'  # Replace with your image file path
+    main(image_path)
+Step 3: Prepare Image File and Data
+Image File:
+
+Ensure you have the image file you want to process. For example, test_image.jpg.
+Shape Predictor File:
+
+Download the shape_predictor_68_face_landmarks.dat file from Dlib's model repository.
+Place shape_predictor_68_face_landmarks.dat in the same directory as your Python script.
+Step 4: Verify and Run the Script
+Open Command Prompt:
+
+Press Win + R, type cmd, and press Enter.
+Navigate to Your Project Directory:
+
+Switch to the D: drive: D:
+Change directory to your project folder: cd "AI MY PROJECT"
+Verify File Presence:
+
+List files in the directory: dir
+Ensure face_keypoints_detection.py, test_image.jpg, and shape_predictor_68_face_landmarks.dat are listed.
+Run the Script:
+
+Execute the script by running: python face_keypoints_detection.py
+The script should open a window showing the image with facial landmarks drawn.
+Troubleshooting
+File Not Found Error:
+
+Ensure test_image.jpg is correctly named and located in the same directory.
+Update the image_path variable in the script if needed.
+Error Messages:
+
+Review the error message details to identify issues like file path problems or library issues

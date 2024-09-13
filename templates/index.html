@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Images</title>
+    <style>
+        .gallery img {
+            width: 200px;
+            height: auto;
+            margin: 10px;
+            border: 1px solid #ddd;
+        }
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+<body>
+    <h1>Upload Images</h1>
+    <form action="/" method="post" enctype="multipart/form-data">
+        <input type="file" name="files" accept="image/*" multiple required>
+        <select name="filter">
+            <option value="">Select a filter (optional)</option>
+            <option value="BLUR">Blur</option>
+            <option value="CONTOUR">Contour</option>
+            <option value="DETAIL">Detail</option>
+            <!-- Add more filters if needed -->
+        </select>
+        <button type="submit">Upload</button>
+    </form>
+    {% if error_message %}
+        <p style="color: red;">{{ error_message }}</p>
+    {% endif %}
+    {% if processed_images %}
+        <h2>Gallery</h2>
+        <div class="gallery">
+            {% for image in processed_images %}
+                <img src="{{ url_for('static', filename=image) }}" alt="Processed Image">
+            {% endfor %}
+        </div>
+    {% endif %}
+</body>
+</html>
